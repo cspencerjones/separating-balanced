@@ -1,0 +1,22 @@
+ &OFFLINE_PARM01
+  UvelFile='vel_llc_4320_agulhas_daily2/uvel',
+  VvelFile='vel_llc_4320_agulhas_daily2/vvel',
+  WvelFile='vel_llc_4320_agulhas_daily2/wvel',
+&
+
+ &OFFLINE_PARM02
+  offlineLoadPrec=32,
+# the first iteration available is 10368
+# Normally the offline model assumes that the offline iteration
+# number corresponds with the END of the averaging interval.
+# But maybe behavior is different with offlineForcingCycle=0
+  offlineIter0=864,
+#  offlineIter0=0,
+# keep everything below the same!  
+  deltaToffline=25.,
+  offlineForcingPeriod=3600.,
+# turn off cycling
+  offlineForcingCycle=0.,
+  runFwd=-1,
+ &
+

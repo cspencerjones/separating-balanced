@@ -1,0 +1,12 @@
+ &diagnostics_list
+# 1 year
+#  frequency(1) = 31449600.0,
+#  filename(1) = 'tracer_diags',
+#  fields(1,1) = 'TRAC01  ','TRACSQ01','DXSqTr01','DYSqTr01',
+#   'UTRAC01 ', 'VTRAC01 '
+  frequency(2) = 86400.0,
+  filename(2) = 'DiagVel_1day',
+  fields(1,2) = 'UVEL    ','VVEL    ','WVEL    ', 'UVELSQ  ','VVELSQ  ', 'WVELSQ  ',
+ &
+ &DIAG_STATIS_PARMS
+ &

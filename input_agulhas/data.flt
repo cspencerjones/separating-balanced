@@ -1,0 +1,14 @@
+ &FLT_NML
+# 4 hours
+# flt_int_traj = 14400.,
+# 1 day
+ flt_int_traj = 2160.,
+ flt_int_prof =  0.0,
+ flt_noise    = 0.0,
+ flt_selectTrajOutp = 3,
+# flt_file     = 'flt_ini_pos.epac.32deg.bin',
+# flt_file     = 'flt_ini_pos.epac.16deg.bin',
+# flt_file     = 'flt_ini_pos_hex.epac.16deg.bin',
+ flt_file     = 'flt_ini_pos_rect_s2.bin',
+ &
+
