@@ -335,6 +335,21 @@ c       _EXCH_XY_RS(icem0, myThid )
 c       _EXCH_XY_RS(icem1, myThid )
 c      ENDIF
 
+       IF ( etaNFile .NE. ' ' ) THEN
+        I1=IFNBLNK(etaNFile)
+        I2=ILNBLNK(etaNFile)
+        WRITE(fn,'(A,A,I10.10)') etaNFile(I1:I2),'.',
+     &        intime0*Ifprd +offlineIter0
+        CALL READ_REC_3D_RS( fn, prec,  1, etan0, 1, myIter, myThid )
+        WRITE(fn,'(A,A,I10.10)') etaNFile(I1:I2),'.',
+     &        intime1*Ifprd +offlineIter0
+        CALL READ_REC_3D_RS( fn, prec,  1, etan1, 1, myIter, myThid )
+        _EXCH_XY_RS(etan0, myThid )
+        _EXCH_XY_RS(etan1, myThid )
+       ENDIF
+
+
+
 #endif /* else NOT_MODEL_FILES */
 
 C-    save newly loaded time-record
@@ -394,6 +409,16 @@ C     (as it is the case when using Non-Lin Free-Surf)
           STOP 'OFFLINE_FIELDS_LOAD: r-Coord NLFS code missing'
          ENDIF
 #endif /* NONLIN_FRSURF */
+        IF ( etaNFile.NE.' ' ) THEN
+          DO j=1-OLy,sNy+OLy
+           DO i=1-OLx,sNx+OLx
+            etaN(i,j,bi,bj) = bWght*etan0(i,j,bi,bj)
+     &                                 + aWght*etan1(i,j,bi,bj)
+           ENDDO
+          ENDDO
+        ENDIF
+
+
 
 C--   end bi,bj loops
         ENDDO

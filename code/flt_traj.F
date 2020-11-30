@@ -74,7 +74,7 @@ CEOP
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
 
 C--   set number of fields to write
-      nFlds = 7
+      nFlds = 11
 C      IF ( flt_selectTrajOutp.GE.1 ) nFlds = nFlds + 8
 C      IF ( flt_selectTrajOutp.GE.2 ) nFlds = nFlds + 5
 C-- RPA hack: output vorticity
@@ -111,23 +111,23 @@ C#else
 C         i0x = DFLOAT( myXGlobalLo-1 + (bi-1)*sNx )
 C         j0y = DFLOAT( myYGlobalLo-1 + (bj-1)*sNy )
 C#endif
-         IF ( flt_selectTrajOutp.GE.3 ) THEN
+C         IF ( flt_selectTrajOutp.GE.3 ) THEN
 C --     Calculate relative vorticity
-           DO kp = 1,Nr
-             CALL MOM_CALC_HFACZ( bi,bj,kp,hFacZ,r_hFacZ,myThid )
-             CALL MOM_CALC_RELVORT3( bi, bj, kp,
-     &                                 uVel, vVel, hFacZ,
-     &                                 vort3(1-OLx,1-OLy,kp, bi, bj),
-     &                                 myThid)
-             DO j=1-OLy,sNy+OLy
-              DO i=1-OLx,sNx+OLx
-                IF ( hFacZ(i,j).EQ.0. ) THEN
-                  vort3(i,j,kp, bi, bj)  = 0. _d 0
-                ENDIF
-              ENDDO
-             ENDDO
-           ENDDO
-         ENDIF
+C           DO kp = 1,Nr
+C             CALL MOM_CALC_HFACZ( bi,bj,kp,hFacZ,r_hFacZ,myThid )
+C             CALL MOM_CALC_RELVORT3( bi, bj, kp,
+C     &                                 uVel, vVel, hFacZ,
+C     &                                 vort3(1-OLx,1-OLy,kp, bi, bj),
+C     &                                 myThid)
+C             DO j=1-OLy,sNy+OLy
+C              DO i=1-OLx,sNx+OLx
+C                IF ( hFacZ(i,j).EQ.0. ) THEN
+C                  vort3(i,j,kp, bi, bj)  = 0. _d 0
+C                ENDIF
+C              ENDDO
+C             ENDDO
+C           ENDDO
+C         ENDIF
 
          DO ip=1,npart_tile(bi,bj)
 
@@ -137,11 +137,11 @@ C --     Calculate relative vorticity
      I                               ix, jy, bi,bj, myThid )
             zz = FLT_MAP_K2R( kpart(ip,bi,bj),bi,bj,myThid )
             kp = NINT(kpart(ip,bi,bj))
-C            tmp(1) = DBLE(npart(ip,bi,bj))
-            tmp(1) = myTime
-            tmp(2) = xx
-            tmp(3) = yy
-            tmp(4) = zz
+            tmp(1) = DBLE(npart(ip,bi,bj))
+            tmp(2) = myTime
+            tmp(3) = xx
+            tmp(4) = yy
+            tmp(5) = zz
 C            tmp(6) = ix + i0x
 C            tmp(7) = jy + j0y
 C            tmp(8) = kpart(ip,bi,bj)
@@ -168,18 +168,18 @@ C              ENDIF
             kp = MIN( MAX(kp,1), Nr)
             CALL FLT_BILINEAR  (ix,jy,uu,uVel,  kp,1,bi,bj,myThid)
             CALL FLT_BILINEAR  (ix,jy,vv,vVel,  kp,2,bi,bj,myThid)
-C              CALL FLT_BILINEAR2D(ix,jy,pp,etaN,     0,bi,bj,myThid)
-C              CALL FLT_BILINEAR  (ix,jy,tt,theta, kp,0,bi,bj,myThid)
-C              CALL FLT_BILINEAR  (ix,jy,ss,salt,  kp,0,bi,bj,myThid)
+            CALL FLT_BILINEAR2D(ix,jy,pp,etaN,     0,bi,bj,myThid)
+            CALL FLT_BILINEAR  (ix,jy,tt,theta, kp,0,bi,bj,myThid)
+            CALL FLT_BILINEAR  (ix,jy,ss,salt,  kp,0,bi,bj,myThid)
 C              tmp( 9) = pp
-            tmp(5) = uu
-            tmp(6) = vv
-C              tmp(12) = tt
-C              tmp(13) = ss
-              
+            tmp(6) = uu
+            tmp(7) = vv
+            tmp(8) = tt
+            tmp(9) = ss
+            tmp(10) = pp 
 C-- RPA hack: calculate relative vorticity
-            CALL FLT_BILINEAR(ix,jy,vo,vort3, kp, 4,bi,bj,myThid)
-            tmp(7) = vo
+C            CALL FLT_BILINEAR(ix,jy,vo,vort3, kp, 4,bi,bj,myThid)
+C            tmp(7) = vo
              
               
 C            ELSEIF ( flt_selectTrajOutp.GE.2 ) THEN
@@ -219,9 +219,10 @@ C--   Write shared buffer to file
            OPEN(33333, FILE=fn, ACCESS='APPEND', ACTION='WRITE',
      &          STATUS='REPLACE')
 C-- write out header           
-           WRITE(33333, '(9A)') 
-     &          'npart,', 'time,', 'x,', 'y,', 'z,', 'u,', 'v,',
-     &          'vort,'
+           WRITE(33333, '(11A)') 
+     &          'junk,','npart,', 'time,', 'x,', 'y,'
+     &           , 'z,', 'u,', 'v,','t,','s,', 
+     &          'eta,'
 C-- write out data
            DO ip=1,npart_tile(bi,bj)
              WRITE(33333, '(I, 99(A, E))') npart(ip,bi,bj),

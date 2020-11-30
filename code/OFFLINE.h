@@ -12,7 +12,8 @@ C-  Forcing files
      &       UvelFile, VvelFile, WvelFile, ThetFile, Saltfile,
      &       ConvFile, KPP_DiffSFile, KPP_ghatKFile,
      &       GMwxFile, GMwyFile, GMwzFile,
-     &       HFluxFile, SFluxFile, IceFile
+     &       HFluxFile, SFluxFile, IceFile,
+     &     etaNFile
       CHARACTER*(MAX_LEN_FNAM) UvelFile
       CHARACTER*(MAX_LEN_FNAM) VvelFile
       CHARACTER*(MAX_LEN_FNAM) WvelFile
@@ -27,6 +28,7 @@ C-  Forcing files
       CHARACTER*(MAX_LEN_FNAM) HFluxFile
       CHARACTER*(MAX_LEN_FNAM) SFluxFile
       CHARACTER*(MAX_LEN_FNAM) IceFile
+      CHARACTER*(MAX_LEN_FNAM) etaNFile
 
       COMMON /OFFLINE_PARAMS_I/
      &       offlineLoadPrec,
@@ -102,5 +104,7 @@ c     _RS  hflx0    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
 c     _RS  hflx1    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
 c     _RS  icem0    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
 c     _RS  icem1    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  etan0    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  etan1    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
 
 #endif /* ALLOW_OFFLINE*/

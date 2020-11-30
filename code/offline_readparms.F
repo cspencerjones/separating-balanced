@@ -34,7 +34,7 @@ C--   Bulk Formula parameter
      &         GMwxFile, GMwyFile, GMwzFile,
      &         ConvFile, KPP_DiffSFile, KPP_ghatKFile,
      &         HFluxFile, SFluxFile, IceFile,
-     &         KPP_ghatFile
+     &         etaNFile, KPP_ghatFile
 
       NAMELIST /OFFLINE_PARM02/
      &         offlineIter0, deltaToffline, offlineTimeOffset,
@@ -80,6 +80,7 @@ C--   Default values for params in OFFLINE_PARM01 :
       HFluxFile= ' '
       SFluxFile= ' '
       IceFile  = ' '
+      etaNFile = ' '
 
 C--   Read parameters from open data file
       READ(UNIT=iUnit,NML=OFFLINE_PARM01)

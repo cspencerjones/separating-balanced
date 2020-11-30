@@ -23,14 +23,14 @@
 # Time stepping parameters
  &PARM03
  nIter0 =0,
- nTimeSteps=800,
+ nTimeSteps=24192,
  deltaTtracer= 25.0,
  deltaTClock = 25.0,
- pChkptFreq= 604800.,
- chkptFreq= 604800.,
+ pChkptFreq= 25000.,
+ chkptFreq= 25000.,
  dumpFreq=  0.,
  taveFreq=  0.,
- monitorFreq= 86400.,
+ monitorFreq= 25000.,
  &
 #
 # Gridding parameters
