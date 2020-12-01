@@ -74,7 +74,7 @@ CEOP
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
 
 C--   set number of fields to write
-      nFlds = 11
+      nFlds = 9
 C      IF ( flt_selectTrajOutp.GE.1 ) nFlds = nFlds + 8
 C      IF ( flt_selectTrajOutp.GE.2 ) nFlds = nFlds + 5
 C-- RPA hack: output vorticity
@@ -137,11 +137,11 @@ C         ENDIF
      I                               ix, jy, bi,bj, myThid )
             zz = FLT_MAP_K2R( kpart(ip,bi,bj),bi,bj,myThid )
             kp = NINT(kpart(ip,bi,bj))
-            tmp(1) = DBLE(npart(ip,bi,bj))
-            tmp(2) = myTime
-            tmp(3) = xx
-            tmp(4) = yy
-            tmp(5) = zz
+C            tmp(1) = DBLE(npart(ip,bi,bj))
+            tmp(1) = myTime
+            tmp(2) = xx
+            tmp(3) = yy
+            tmp(4) = zz
 C            tmp(6) = ix + i0x
 C            tmp(7) = jy + j0y
 C            tmp(8) = kpart(ip,bi,bj)
@@ -166,17 +166,28 @@ C                kp = MIN( MAX(kp,1), Nr)
 C              ENDIF
              
             kp = MIN( MAX(kp,1), Nr)
-            CALL FLT_BILINEAR  (ix,jy,uu,uVel,  kp,1,bi,bj,myThid)
-            CALL FLT_BILINEAR  (ix,jy,vv,vVel,  kp,2,bi,bj,myThid)
-            CALL FLT_BILINEAR2D(ix,jy,pp,etaN,     0,bi,bj,myThid)
-            CALL FLT_BILINEAR  (ix,jy,tt,theta, kp,0,bi,bj,myThid)
-            CALL FLT_BILINEAR  (ix,jy,ss,salt,  kp,0,bi,bj,myThid)
+            IF ((maskC(FLOOR(ix),FLOOR(jy),kp,bi,bj).EQ.0) .OR.
+     &          (maskC(FLOOR(ix)+1,FLOOR(jy),kp,bi,bj).EQ.0).OR.
+     &          (maskC(FLOOR(ix),FLOOR(jy)+1,kp,bi,bj).EQ.0).OR.
+     &           (maskC(FLOOR(ix)+1,FLOOR(jy)+1,kp,bi,bj).EQ.0))THEN
+                tmp(5)=-999.
+                tmp(6)=-999.
+                tmp(7)=-999.
+                tmp(8)=-999.
+                tmp(9)=-999.
+            ELSE 
+               CALL FLT_BILINEAR  (ix,jy,uu,uVel,  kp,1,bi,bj,myThid)
+               CALL FLT_BILINEAR  (ix,jy,vv,vVel,  kp,2,bi,bj,myThid)
+               CALL FLT_BILINEAR2D(ix,jy,pp,etaN,     0,bi,bj,myThid)
+               CALL FLT_BILINEAR  (ix,jy,tt,theta, kp,0,bi,bj,myThid)
+               CALL FLT_BILINEAR  (ix,jy,ss,salt,  kp,0,bi,bj,myThid)
 C              tmp( 9) = pp
-            tmp(6) = uu
-            tmp(7) = vv
-            tmp(8) = tt
-            tmp(9) = ss
-            tmp(10) = pp 
+               tmp(5) = uu
+               tmp(6) = vv
+               tmp(7) = tt
+               tmp(8) = ss
+               tmp(9) = pp
+             ENDIF 
 C-- RPA hack: calculate relative vorticity
 C            CALL FLT_BILINEAR(ix,jy,vo,vort3, kp, 4,bi,bj,myThid)
 C            tmp(7) = vo
@@ -219,14 +230,14 @@ C--   Write shared buffer to file
            OPEN(33333, FILE=fn, ACCESS='APPEND', ACTION='WRITE',
      &          STATUS='REPLACE')
 C-- write out header           
-           WRITE(33333, '(11A)') 
-     &          'junk,','npart,', 'time,', 'x,', 'y,'
+           WRITE(33333, '(10A)') 
+     &          'npart,', 'time,', 'x,', 'y,'
      &           , 'z,', 'u,', 'v,','t,','s,', 
-     &          'eta,'
+     &          'eta'
 C-- write out data
            DO ip=1,npart_tile(bi,bj)
-             WRITE(33333, '(I, 99(A, E))') npart(ip,bi,bj),
-     &                (',', flt_io_buff(ii,ip,bi,bj), ii=1, nFlds)
+             WRITE(33333, '(I, 99(A, E))') INT(npart(ip,bi,bj)),
+     &                (',',flt_io_buff(ii,ip,bi,bj), ii=1, nFlds)
            ENDDO
            CLOSE(33333)
          ENDIF

@@ -10,5 +10,7 @@
 # flt_file     = 'flt_ini_pos.epac.16deg.bin',
 # flt_file     = 'flt_ini_pos_hex.epac.16deg.bin',
  flt_file     = 'flt_ini_pos_rect_s2.bin',
+ flt_sqrtFperC = 1,
+ flt_klevels = 3. ,
  &
 

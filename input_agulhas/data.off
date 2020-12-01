@@ -2,6 +2,9 @@
   UvelFile='../velocity_data/uvel',
   VvelFile='../velocity_data/vvel',
   WvelFile='../velocity_data/vvel',
+  ThetFile='../density_data/theta',
+  SaltFile='../density_data/salt',
+  etaNFile='../density_data/eta',
 &
 
  &OFFLINE_PARM02
