@@ -216,10 +216,12 @@ c
            DO k=1,kno
             DO jFpC=1,flt_sqrtFperC
              DO iFpC=1,flt_sqrtFperC
-              DO j=1,sNy,2
-               DO i=1,sNx,2
+              DO j=1,sNy
+               DO i=1,sNx
                 icount=icount+1
-                npart(ip,bi,bj)  = icount
+                npart(ip,bi,bj)  = (DBLE(iG)-1)*DBLE(sNx)*DBLE(sNy)+
+     &                             (DBLE(jG)-1)*DBLE(sNx)+
+     &                              DBLE(icount)
                 tstart(ip,bi,bj) = -1. _d 0
                 ipart(ip,bi,bj)  = i+(DBLE(iFpC)-1)
      &                               /DBLE(flt_sqrtFperC)
