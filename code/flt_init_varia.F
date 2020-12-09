@@ -207,7 +207,7 @@ CSJ----    Add code to write particles
      &                       SQUEEZE_RIGHT, myThid )
 c
            npart_tile(bi,bj) = sNx*sNy*flt_sqrtFperC**2
-     &                                 *kno/2
+     &                                 *kno
            max_npart  = sNx*sNy*flt_sqrtFperC**2
      &                            *kno*5
            npart_read = 1
@@ -219,8 +219,9 @@ c
               DO j=1,sNy
                DO i=1,sNx
                 icount=icount+1
-                npart(ip,bi,bj)  = (DBLE(iG)-1)*DBLE(sNx)*DBLE(sNy)+
-     &                             (DBLE(jG)-1)*DBLE(sNx)+
+                npart(ip,bi,bj)  = (DBLE(jG)-1)*nSx*nPx
+     &                                         *DBLE(sNx)*DBLE(sNy)+
+     &                             (DBLE(iG)-1)*DBLE(sNx)*DBLE(sNy)+
      &                              DBLE(icount)
                 tstart(ip,bi,bj) = -1. _d 0
                 ipart(ip,bi,bj)  = i+(DBLE(iFpC)-1)
