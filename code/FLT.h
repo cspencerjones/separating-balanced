@@ -19,7 +19,7 @@ C     flt_nan     :: qualifier for a float that is not yet released or that died
       INTEGER kno
       PARAMETER (flt_surf = 1.)
       PARAMETER (flt_nan = -999.)
-      PARAMETER (kno = 1)
+      PARAMETER (kno = 4)
 
 C     Full domain extension:
 C     flt_xLo     :: Full domain lower X boundary

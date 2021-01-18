@@ -213,15 +213,16 @@ c
            npart_read = 1
 c           
            ip=1
-           DO k=1,kno
-            DO jFpC=1,flt_sqrtFperC
-             DO iFpC=1,flt_sqrtFperC
-              DO j=1,sNy
-               DO i=1,sNx
+           DO jFpC=1,flt_sqrtFperC
+            DO iFpC=1,flt_sqrtFperC
+             DO j=1,sNy
+              DO i=1,sNx
+               DO k=1,kno
                 icount=icount+1
                 npart(ip,bi,bj)  = (DBLE(jG)-1)*nSx*nPx
-     &                                         *DBLE(sNx)*DBLE(sNy)+
-     &                             (DBLE(iG)-1)*DBLE(sNx)*DBLE(sNy)+
+     &                                   *DBLE(sNx)*DBLE(sNy)*DBLE(kno)+
+     &                             (DBLE(iG)-1)*DBLE(sNx)*DBLE(sNy)
+     &                                          *DBLE(kno)+
      &                              DBLE(icount)
                 tstart(ip,bi,bj) = -1. _d 0
                 ipart(ip,bi,bj)  = i+(DBLE(iFpC)-1)
