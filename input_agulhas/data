@@ -12,6 +12,7 @@
  useSingleCpuIO=.TRUE.,
 # readBinaryPrec=32,
 # writeBinaryPrec=32,
+ debugLevel=4,
 &
 #
 # Elliptic solver parameters
@@ -23,11 +24,11 @@
 # Time stepping parameters
  &PARM03
  nIter0 =0,
- nTimeSteps=24192,
+ nTimeSteps=10,
  deltaTtracer= 25.0,
  deltaTClock = 25.0,
- pChkptFreq= 25000.,
- chkptFreq= 25000.,
+ pChkptFreq= 250000.,
+ chkptFreq= 250000.,
  dumpFreq=  0.,
  taveFreq=  0.,
  monitorFreq= 25000.,

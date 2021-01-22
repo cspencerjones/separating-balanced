@@ -20,6 +20,7 @@
   offlineForcingPeriod=3600.,
 # turn off cycling
   offlineForcingCycle=0.,
+  offlineTimeOffset = 1800.,
   runFwd=1,
  &
 
