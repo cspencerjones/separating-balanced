@@ -1,0 +1,18 @@
+#!/bin/bash
+
+TIMESTEP="6192"
+
+mkdir "fwd_${TIMESTEP}"
+
+cp ../input_agulhas/* fwd_${TIMESTEP}/
+
+sed -i "s/.*offlineIter0.*/ offlineIter0=${TIMESTEP},/" fwd_${TIMESTEP}/data.off
+
+mkdir "back_${TIMESTEP}"
+
+cp ../input_agulhas/* back_${TIMESTEP}/
+
+sed -i "s/.*runFwd.*/ runFwd=-1,/" back_${TIMESTEP}/data.off
+
+sed -i "s/.*offlineIter0.*/ offlineIter0=${TIMESTEP},/" back_${TIMESTEP}/data.off
+
