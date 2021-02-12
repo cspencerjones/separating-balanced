@@ -1,12 +1,18 @@
 #!/bin/bash
 
-TIMESTEP="6192"
+TIMESTEP="6336"
 
 mkdir "fwd_${TIMESTEP}"
 
 cp ../input_agulhas/* fwd_${TIMESTEP}/
 
 sed -i "s/.*offlineIter0.*/ offlineIter0=${TIMESTEP},/" fwd_${TIMESTEP}/data.off
+
+cd "fwd_${TIMESTEP}"
+
+sbatch batch.sh 
+
+cd ..
 
 mkdir "back_${TIMESTEP}"
 
