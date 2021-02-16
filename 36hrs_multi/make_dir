@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TIMESTEP="6336"
+TIMESTEP="6048"
 
 mkdir "fwd_${TIMESTEP}"
 
@@ -22,3 +22,8 @@ sed -i "s/.*runFwd.*/ runFwd=-1,/" back_${TIMESTEP}/data.off
 
 sed -i "s/.*offlineIter0.*/ offlineIter0=${TIMESTEP},/" back_${TIMESTEP}/data.off
 
+cd "back_${TIMESTEP}"
+
+sbatch batch.sh
+
+cd ..

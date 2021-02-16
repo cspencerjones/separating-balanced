@@ -26,10 +26,13 @@ from tqdm import tqdm
 ddir = '/rigel/ocp/users/csj2114/swot/agulhas/36hrs_multi/fwd_'+ str(timestep)
 fnames = sorted(glob(f'{ddir}/*.csv'))
 fnames[:4]
+assert(len(fnames)/144==37)
+
 
 ddir_back = '/rigel/ocp/users/csj2114/swot/agulhas/36hrs_multi/back_'+ str(timestep)
 fnames_back = sorted(glob(f'{ddir_back}/*.csv'))
 fnames_back[:4]
+assert(len(fnames_back)/144==37)
 
 #define time iterations
 pattern = '.*\.(\d{10})\.(\d{3})\.(\d{3})\.csv'
