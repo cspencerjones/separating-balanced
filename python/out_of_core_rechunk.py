@@ -1,4 +1,4 @@
-timestep = 6048
+timestep=6192
 iters = 74
 
 #Set up dask cluster
