@@ -80,6 +80,17 @@ C     == end of interface ==
 
       DO bj=myByLo(myThid),myByHi(myThid)
        DO bi=myBxLo(myThid),myBxHi(myThid)
+
+        DO k=1,Nr
+         DO j=1-OLy,sNy+OLy
+          DO i=1-OLx,sNx+OLx
+           uFld(i,j,k,bi,bj) = runFwd*uVel(i,j,k,bi,bj)
+           vFld(i,j,k,bi,bj) = runFwd*vVel(i,j,k,bi,bj)
+           wFld(i,j,k,bi,bj) = runFwd*wVel(i,j,k,bi,bj)
+          ENDDO
+         ENDDO
+        ENDDO
+
          DO ip=1,npart_tile(bi,bj)
 
 C     If float has died move to level 0
@@ -105,16 +116,6 @@ C     Start integration between tstart and tend (individual for each float)
               jG = myYGlobalLo + (bj-1)*sNy + jc-1
 
 
-        DO k=1,Nr
-         DO j=1-OLy,sNy+OLy
-          DO i=1-OLx,sNx+OLx
-           uFld(i,j,k,bi,bj) = runFwd*uVel(i,j,k,bi,bj)
-           vFld(i,j,k,bi,bj) = runFwd*vVel(i,j,k,bi,bj)
-           wFld(i,j,k,bi,bj) = runFwd*wVel(i,j,k,bi,bj)
-          ENDDO
-         ENDDO
-        ENDDO
-
 C     First step
 
 #ifdef ALLOW_3D_FLT
@@ -139,7 +140,7 @@ C expects it to be just a normal kpart type variable.
                 CALL FLT_BILINEAR(ix,jy,u1,uFld,kc,1,bi,bj
      &                                ,myThid)
                 CALL FLT_BILINEAR(ix,jy,v1,vFld,kc,2,bi,bj
-     *                                  ,myThid)
+     &                                  ,myThid)
               ENDIF
 
 C When using this alternative scheme the noise probably should not be added twice.

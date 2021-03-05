@@ -1,10 +1,7 @@
  &OFFLINE_PARM01
-  UvelFile='../../velocity_data/uvel',
-  VvelFile='../../velocity_data/vvel',
-  WvelFile='../../velocity_data/vvel',
-  ThetFile='../../density_data/theta',
-  SaltFile='../../density_data/salt',
-  etaNFile='../../density_data/eta',
+  UvelFile='../velocity_data/uvel',
+  VvelFile='../velocity_data/vvel',
+  WvelFile='../velocity_data/wvel',
 &
 
  &OFFLINE_PARM02
@@ -13,13 +10,13 @@
 # Normally the offline model assumes that the offline iteration
 # number corresponds with the END of the averaging interval.
 # But maybe behavior is different with offlineForcingCycle=0
-  offlineIter0=30096,
+  offlineIter0=864,
+#  offlineIter0=0,
 # keep everything below the same!  
   deltaToffline=25.,
   offlineForcingPeriod=3600.,
 # turn off cycling
   offlineForcingCycle=0.,
-  offlineTimeOffset = 1800.,
-  runFwd=1,
+  runFwd=-1,
  &
 
