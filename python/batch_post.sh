@@ -14,7 +14,7 @@ source activate test_scipy
 
 export XDG_RUNTIME_DIR=""
 
-TIMESTEP="6336"
+TIMESTEP="19008"
 
 sed -i "1s/.*timestep.*=.*/timestep=${TIMESTEP}/" out_of_core_float_to_zarr.py
 
