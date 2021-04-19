@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TIMESTEP="6336"
+TIMESTEP="10656"
 
 mkdir "fwd_${TIMESTEP}"
 
