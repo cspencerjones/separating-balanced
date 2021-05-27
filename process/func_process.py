@@ -2,7 +2,23 @@ def flt_process(timestep,indir):
     flt_to_zarr(timestep,indir)
     flt_reshape(timestep,indir)
     flt_rechunk(timestep,indir)
-
+    delete_garbage(timestep,indir)
+    
+def delete_garbage(timestep,indir):
+    import xarray as xr
+    imoort os
+    target = indir + '/process_' + str(timestep) + '/rechunked_' + str(timestep) + '.zarr'
+    test_open = xr.open_zarr(target)
+    if (test_open.niter.size==74):
+        fnames = glob(f'{indir}/*_'+ str(timestep)+ '/*.csv')
+        os.remove(fnames)
+        fnames2 = indir + '/process_' + str(timestep) + '/run_' + str(timestep) + '.zarr'
+        os.remove(fnames2)
+        fnames2 = indir + '/process_' + str(timestep) + '/reshaped_' + str(timestep) + '.zarr'
+        os.remove(fnames2)
+        fnames2 = indir + '/process_' + str(timestep) + '/intermediate_' + str(timestep) + '.zarr'
+        os.remove(fnames2)
+    
 def flt_to_zarr(timestep,indir):
     num_particles = 4665600*4
 
