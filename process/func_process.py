@@ -6,18 +6,21 @@ def flt_process(timestep,indir):
     
 def delete_garbage(timestep,indir):
     import xarray as xr
-    imoort os
+    import os
+    from glob import glob
+    import shutil
     target = indir + '/process_' + str(timestep) + '/rechunked_' + str(timestep) + '.zarr'
     test_open = xr.open_zarr(target)
     if (test_open.niter.size==74):
         fnames = glob(f'{indir}/*_'+ str(timestep)+ '/*.csv')
-        os.remove(fnames)
+        for fname in fnames:
+            os.remove(fname)
         fnames2 = indir + '/process_' + str(timestep) + '/run_' + str(timestep) + '.zarr'
-        os.remove(fnames2)
+        shutil.rmtree(fnames2)
         fnames2 = indir + '/process_' + str(timestep) + '/reshaped_' + str(timestep) + '.zarr'
-        os.remove(fnames2)
+        shutil.rmtree(fnames2)
         fnames2 = indir + '/process_' + str(timestep) + '/intermediate_' + str(timestep) + '.zarr'
-        os.remove(fnames2)
+        shutil.rmtree(fnames2)
     
 def flt_to_zarr(timestep,indir):
     num_particles = 4665600*4
