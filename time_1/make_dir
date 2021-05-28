@@ -1,6 +1,10 @@
 #!/bin/bash
 
-TIMESTEP="6768"
+for i in {4..20}
+do
+ts=$((6768+144*$i))
+
+TIMESTEP="$ts"
 
 mkdir "fwd_${TIMESTEP}"
 
@@ -45,3 +49,8 @@ sed -i "s/.*#SBATCH --dependency=afterok:job1:job2.*/#SBATCH --dependency=aftero
 cd "process_${TIMESTEP}"
 
 sbatch batch_process.sh
+
+cd ..
+
+
+done
