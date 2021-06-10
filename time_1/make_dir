@@ -1,8 +1,8 @@
 #!/bin/bash
 
-for i in {4..20}
+for i in {41..80}
 do
-ts=$((6768+144*$i))
+ts=$((6048+144*$i))
 
 TIMESTEP="$ts"
 

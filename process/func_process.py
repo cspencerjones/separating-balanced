@@ -19,7 +19,7 @@ def delete_garbage(timestep,indir):
         shutil.rmtree(fnames2)
         fnames2 = indir + '/process_' + str(timestep) + '/reshaped_' + str(timestep) + '.zarr'
         shutil.rmtree(fnames2)
-        fnames2 = indir + '/process_' + str(timestep) + '/intermediate_' + str(timestep) + '.zarr'
+        fnames2 = indir + '/process_' + str(timestep) + '/intermediate' + str(timestep) + '.zarr'
         shutil.rmtree(fnames2)
     
 def flt_to_zarr(timestep,indir):
