@@ -12,14 +12,18 @@ def auto_filter(indir,window_width):
     import numpy as np
 
 
+    #find f
+    YC =np.fromfile(f'{indir}/fwd_6048/YC.data', dtype='>f4')
+    f = 2*2*np.pi/24/3600*np.sin(YC.reshape(2160,2160)[:,0]*np.pi/180)
+
     fnames = sorted(glob(f'{indir}/process_*/rechunked_*.zarr'))
 
     def lanczos(x, a):
         return np.sinc(x/a)
     def sinc2(x, a):
-        return np.sinc(x/a*3)
+        return np.sinc(x/a)
 
-    weight = xr.DataArray(sinc2(np.arange(-window_width/2,window_width/2), window_width/2), dims=['window'])
+    weight = xr.DataArray(sinc2(np.expand_dims(np.arange(-window_width/2,window_width/2),1),np.expand_dims(np.pi/f/3600,0)), dims=['window','y0'])
 
 
     target_unf = indir + 'unfiltered_vels.zarr'
@@ -37,9 +41,9 @@ def auto_filter(indir,window_width):
         ds = ds.assign_coords({"time": ds.time})
         ds = ds.swap_dims({"niter": "time"})
         ds = ds.where((ds.u!=-999).all(dim='time'))
-        weight = xr.DataArray(sinc2(np.arange(-window_width/2,window_width/2), window_width/2), dims=['window'])
-        windowed_u = ds.u.rolling(time=window_width, center=True).construct('window').dot(weight)/np.sum(weight)
-        windowed_v = ds.v.rolling(time=window_width, center=True).construct('window').dot(weight)/np.sum(weight)
+        weight = xr.DataArray(sinc2(np.expand_dims(np.arange(-window_width/2,window_width/2),1),np.expand_dims(np.pi/f/3600,0)), dims=['window','y0'])
+        windowed_u = ds.u.rolling(time=window_width, center=True).construct('window').dot(weight,dims='window')/weight.sum('window')
+        windowed_v = ds.v.rolling(time=window_width, center=True).construct('window').dot(weight,dims='window')/weight.sum('window')
         u_piece = windowed_u.sel(time=0).isel(z0=3)
         v_piece = windowed_v.sel(time=0).isel(z0=3)
         u_piece2 = ds.u.sel(time=0).isel(z0=3)
@@ -89,8 +93,8 @@ def auto_filter(indir,window_width):
         mask_roundy = abs(ds.y.diff('time')).max('time')
         ds = ds.where(mask_roundx<30)
         ds = ds.where(mask_roundy<30)
-        weight = xr.DataArray(sinc2(np.arange(-window_width/2,window_width/2), window_width/2), dims=['window'])
-        windowed_eta = ds.eta.rolling(time=window_width, center=True).construct('window').dot(weight)/np.sum(weight)
+        weight = xr.DataArray(sinc2(np.expand_dims(np.arange(-window_width/2,window_width/2),1),np.expand_dims(np.pi/f/3600,0)), dims=['window','y0'])
+        windowed_eta = ds.eta.rolling(time=window_width, center=True).construct('window').dot(weight,dims='window')/weight.sum('window')
         eta_piece = windowed_eta.sel(time=0).isel(z0=3)
         eta_piece2 = ds.eta.sel(time=0).isel(z0=3)
         eta_piece["time"] = fileno*3600
