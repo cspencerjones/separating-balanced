@@ -1,0 +1,17 @@
+name: ginsnburg_env
+channels:
+  - conda-forge
+  - default
+dependencies:
+  - python
+  - numpy
+  - scipy
+  - pandas
+  - xarray
+  - matplotlib
+  - dask
+  - distributed
+  - ipywidgets
+  - zarr
+  - tqdm
+  - rechunker

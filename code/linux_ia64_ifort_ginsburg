@@ -1,0 +1,53 @@
+#!/bin/bash
+#
+# Tested on uv100.awi.de (SGI UV 100, details:
+#                         http://www.sgi.com/products/servers/uv/specs.html)
+# a) For more speed, provided your data size does not exceed 2GB you can
+#    remove -fPIC which carries a performance penalty of 2-6%.
+# b) You can replace -fPIC with '-mcmodel=medium -shared-intel' which may
+#    perform faster than -fPIC and still support data sizes over 2GB per
+#    process but all the libraries you link to must be compiled with
+#    -fPIC or -mcmodel=medium
+# c) flags adjusted for ifort 12.1.0
+
+if test "x$MPI" = xtrue ; then
+  CC=mpiicc
+  FC=mpiifort
+  F90C=mpiifort
+else
+  CC=icc
+  FC=ifort
+  F90C=ifort
+fi
+
+CPP='/lib/cpp  -traditional -P'
+EXTENDED_SRC_FLAG='-132'
+
+DEFINES='-DWORDLENGTH=4'
+LIBS="$(nf-config --flibs)"
+INCLUDES="$(nf-config --fflags)"
+INCLUDEDIRS="$(nf-config --includedir)"
+
+if test "x$MPI" = xtrue ; then
+   DEFINES+=' -DALLOW_USE_MPI -DALWAYS_USE_MPI'
+   LIBS+=" -L$I_MPI_ROOT/lib64 -lmpi"
+   INCLUDES+=" -I$I_MPI_ROOT/intel64/include"
+   INCLUDEDIRS+=" $I_MPI_ROOT/intel64/include"
+fi
+
+if test "x$IEEE" = x ; then
+    #  No need for IEEE-754
+    FFLAGS="$FFLAGS -WB -convert big_endian -assume byterecl -mcmodel=medium -shared-intel"
+    FOPTIM='-O3 -align '
+    NOOPTFLAGS='-O1'
+    NOOPTFILES='calc_oce_mxlayer.F fizhi_lsm.F fizhi_clockstuff.F'
+else
+    #  Try to follow IEEE-754
+    FFLAGS="$FFLAGS -W0 -WB -convert big_endian -assume byterecl -mcmodel=medium -shared-intel"
+    FOPTIM='-O0 -noalign'
+fi
+
+if test "x$DEVEL" = xtrue ; then
+    FFLAGS="$FFLAGS -g -O0 -convert big_endian -assume byterecl -mcmodel=medium -shared-intel -traceback"
+        FOPTIM='-O0 -noalign'
+fi

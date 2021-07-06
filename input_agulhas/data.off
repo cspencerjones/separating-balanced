@@ -1,10 +1,10 @@
  &OFFLINE_PARM01
-  UvelFile='../../velocity_data/uvel',
-  VvelFile='../../velocity_data/vvel',
-  WvelFile='../../velocity_data/vvel',
-  ThetFile='../../density_data/theta',
-  SaltFile='../../density_data/salt',
-  etaNFile='../../density_data/eta',
+  UvelFile='../../../data_partial_depth/uvel',
+  VvelFile='../../../data_partial_depth/vvel',
+  WvelFile='../../../data_partial_depth/vvel',
+  ThetFile='../../../data_partial_depth/theta',
+  SaltFile='../../../data_partial_depth/salt',
+  etaNFile='../../../data_partial_depth/eta_nom',
 &
 
  &OFFLINE_PARM02

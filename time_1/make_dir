@@ -1,0 +1,56 @@
+#!/bin/bash
+
+for i in {81..100}
+do
+ts=$((6048+144*$i))
+
+TIMESTEP="$ts"
+
+mkdir "fwd_${TIMESTEP}"
+
+cp ../input_agulhas/* fwd_${TIMESTEP}/
+
+sed -i "s/.*offlineIter0.*/ offlineIter0=${TIMESTEP},/" fwd_${TIMESTEP}/data.off
+
+cd "fwd_${TIMESTEP}"
+
+jobid1=$(sbatch batch.sh) 
+
+jobid1=`echo $jobid1 | sed 's/\<Submitted\sbatch\sjob\s//g'`
+
+#echo ${jobid1}
+
+cd ..
+
+mkdir "back_${TIMESTEP}"
+
+cp ../input_agulhas/* back_${TIMESTEP}/
+
+sed -i "s/.*runFwd.*/ runFwd=-1,/" back_${TIMESTEP}/data.off
+
+sed -i "s/.*offlineIter0.*/ offlineIter0=${TIMESTEP},/" back_${TIMESTEP}/data.off
+
+cd "back_${TIMESTEP}"
+
+jobid2=$(sbatch batch.sh)
+
+jobid2=`echo $jobid2 | sed 's/\<Submitted\sbatch\sjob\s//g'`
+
+cd ..
+
+mkdir "process_${TIMESTEP}"
+
+cp ../process/* process_${TIMESTEP}/
+
+sed -i "s/.*func_process.flt_process(6048,.*/ func_process.flt_process(${TIMESTEP},/" process_${TIMESTEP}/process.sh
+
+sed -i "s/.*#SBATCH --dependency=afterok:job1:job2.*/#SBATCH --dependency=afterok:${jobid1}:${jobid2}/" process_${TIMESTEP}/batch_process.sh
+
+cd "process_${TIMESTEP}"
+
+sbatch batch_process.sh
+
+cd ..
+
+
+done
