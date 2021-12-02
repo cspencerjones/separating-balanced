@@ -2,9 +2,9 @@
   UvelFile='../../../data_partial_depth/uvel',
   VvelFile='../../../data_partial_depth/vvel',
   WvelFile='../../../data_partial_depth/vvel',
-  ThetFile='../../../data_partial_depth/theta',
-  SaltFile='../../../data_partial_depth/salt',
-  etaNFile='../../../data_partial_depth/eta_nom',
+  ThetFile='../../../data_partial_depth/theta_nom',
+  SaltFile='../../../data_partial_depth/salt_nom',
+  etaNFile='../../../data_eta/steric',
 &
 
  &OFFLINE_PARM02

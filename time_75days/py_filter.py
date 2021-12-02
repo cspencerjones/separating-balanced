@@ -6,6 +6,7 @@ def auto_filter(indir,window_width):
         client = Client(cluster)
         main(client)
 
+
     # import packages
     import xarray as xr
     from glob import glob
@@ -29,15 +30,17 @@ def auto_filter(indir,window_width):
     target_unf = indir + 'unfiltered_vels.zarr'
     target_filt = indir + 'filtered_vels.zarr'
 
+    print('start looping')
     nofiles = len(fnames)
+    print(nofiles)
     for fileno in range(0,nofiles):#
-        iterno = 6048+144*fileno
-        print('/burg/abernathey/users/csj2114/agulhas-offline/time_1/process_'+ str(iterno) + '/rechunked_' 
+        iterno = 6048+144*24*fileno
+        print(f'{indir}/process_' + str(iterno) + '/rechunked_' 
               + str(iterno) + '.zarr')
-        ds = xr.open_zarr('/burg/abernathey/users/csj2114/agulhas-offline/time_1/process_'+ str(iterno) + '/rechunked_' 
+        ds = xr.open_zarr(f'{indir}/process_' + str(iterno) + '/rechunked_' 
               + str(iterno) + '.zarr')
         ds = ds.isel(niter=slice(1,74))
-        ds['time'] = ds['niter']*3600/144
+        ds['time'] = ds['niter']*3600*24/144
         ds = ds.assign_coords({"time": ds.time})
         ds = ds.swap_dims({"niter": "time"})
         ds = ds.where((ds.u!=-999).all(dim='time'))
@@ -48,10 +51,10 @@ def auto_filter(indir,window_width):
         v_piece = windowed_v.sel(time=0).isel(z0=3)
         u_piece2 = ds.u.sel(time=0).isel(z0=3)
         v_piece2 = ds.v.sel(time=0).isel(z0=3)
-        u_piece["time"] = fileno*3600
-        v_piece["time"] = fileno*3600
-        u_piece2["time"] = fileno*3600
-        v_piece2["time"] = fileno*3600
+        u_piece["time"] = fileno*3600*24
+        v_piece["time"] = fileno*3600*24
+        u_piece2["time"] = fileno*3600*24
+        v_piece2["time"] = fileno*3600*24
         unfiltered_vels = u_piece2.to_dataset(name='u')
         unfiltered_vels['v'] = v_piece2
         unfiltered_vels.time.attrs['units']='time in seconds'
@@ -79,13 +82,13 @@ def auto_filter(indir,window_width):
     target_filt = indir + 'filtered_eta_nom.zarr'
     nofiles = len(fnames)
     for fileno in range(0,nofiles):#nofiles
-        iterno = 6048+144*fileno
-        print('/burg/abernathey/users/csj2114/agulhas-offline/time_1/process_'+ str(iterno) + '/rechunked_' 
+        iterno = 6048+144*24*fileno
+        print(f'{indir}/process_' + str(iterno) + '/rechunked_' 
               + str(iterno) + '.zarr')
-        ds = xr.open_zarr('/burg/abernathey/users/csj2114/agulhas-offline/time_1/process_'+ str(iterno) + '/rechunked_' 
+        ds = xr.open_zarr(f'{indir}/process_' + str(iterno) + '/rechunked_' 
               + str(iterno) + '.zarr')
         ds = ds.isel(niter=slice(1,74))
-        ds['time'] = ds['niter']*3600/144
+        ds['time'] = ds['niter']*3600*24/144
         ds = ds.assign_coords({"time": ds.time})
         ds = ds.swap_dims({"niter": "time"})
         ds = ds.where((ds.u!=-999).all(dim='time'))
@@ -97,8 +100,8 @@ def auto_filter(indir,window_width):
         windowed_eta = ds.eta.rolling(time=window_width, center=True).construct('window').dot(weight,dims='window')/weight.sum('window')
         eta_piece = windowed_eta.sel(time=0).isel(z0=3)
         eta_piece2 = ds.eta.sel(time=0).isel(z0=3)
-        eta_piece["time"] = fileno*3600
-        eta_piece2["time"] = fileno*3600
+        eta_piece["time"] = fileno*3600*24
+        eta_piece2["time"] = fileno*3600*24
         unfiltered_eta = eta_piece2.to_dataset(name='eta')
         unfiltered_eta.time.attrs['units']='time in seconds'
         unfiltered_eta.y0.attrs['long_name']='latitude'
