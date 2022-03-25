@@ -1,4 +1,4 @@
-timestep=6192
+timestep=14688
 num_particles = 4665600*4
 
 #Set up dask cluster
