@@ -1,4 +1,4 @@
-name: filtering
+name: filtering_agulhas
 channels:
   - https://repo.anaconda.com/pkgs/free
   - anaconda
