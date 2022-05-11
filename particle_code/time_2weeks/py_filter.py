@@ -32,9 +32,9 @@ def auto_filter(indir,window_width):
     nofiles = len(fnames)
     for fileno in range(0,nofiles):#
         iterno = 6048+144*fileno
-        print('/burg/abernathey/users/csj2114/agulhas-offline/time_1/process_'+ str(iterno) + '/rechunked_' 
+        print('/burg/abernathey/users/csj2114/agulhas-offline/time_2weeks/process_'+ str(iterno) + '/rechunked_' 
               + str(iterno) + '.zarr')
-        ds = xr.open_zarr('/burg/abernathey/users/csj2114/agulhas-offline/time_1/process_'+ str(iterno) + '/rechunked_' 
+        ds = xr.open_zarr('/burg/abernathey/users/csj2114/agulhas-offline/time_2weeks/process_'+ str(iterno) + '/rechunked_' 
               + str(iterno) + '.zarr')
         ds = ds.isel(niter=slice(1,74))
         ds['time'] = ds['niter']*3600/144
@@ -80,9 +80,9 @@ def auto_filter(indir,window_width):
     nofiles = len(fnames)
     for fileno in range(0,nofiles):#nofiles
         iterno = 6048+144*fileno
-        print('/burg/abernathey/users/csj2114/agulhas-offline/time_1/process_'+ str(iterno) + '/rechunked_' 
+        print('/burg/abernathey/users/csj2114/agulhas-offline/time_2weeks/process_'+ str(iterno) + '/rechunked_' 
               + str(iterno) + '.zarr')
-        ds = xr.open_zarr('/burg/abernathey/users/csj2114/agulhas-offline/time_1/process_'+ str(iterno) + '/rechunked_' 
+        ds = xr.open_zarr('/burg/abernathey/users/csj2114/agulhas-offline/time_2weeks/process_'+ str(iterno) + '/rechunked_' 
               + str(iterno) + '.zarr')
         ds = ds.isel(niter=slice(1,74))
         ds['time'] = ds['niter']*3600/144
