@@ -1,6 +1,6 @@
 # separating-balanced
 
-This is the code repository for Jones, C. S., Xiao, Q. , Abernathey, R. P. , Smith, K. S. Separating balanced and unbalanced flow at the surface of the Agulhas region using Lagrangian filtering (in prep). 
+This is the code repository for Jones, C. S., Xiao, Q. , Abernathey, R. P. , Smith, K. S. *Separating balanced and unbalanced flow at the surface of the Agulhas region using Lagrangian filtering* (in prep). 
 
 Plotting scripts are in the folder `python/plotting_scripts`. 
 
