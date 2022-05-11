@@ -9,7 +9,7 @@
 #SBATCH -N 1                     # The number of nodes to use
                                  #(note there are 32 cores per node)
 #SBATCH --exclusive                                 
-#SBATCH --time=04:00:00              # The time the job will take to run.
+#SBATCH --time=14:00:00              # The time the job will take to run.
 
 ./execut_filter.sh
 

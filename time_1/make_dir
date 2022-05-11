@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for i in {141..150}
+for i in {131..140}
 do
 ts=$((6048+144*$i))
 
